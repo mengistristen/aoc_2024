@@ -2,7 +2,7 @@ import Data.List
 import qualified Data.Map.Strict as Map
 
 parsePair :: String -> (Int, Int)
-parsePair line = 
+parsePair line =
   let [x, y] = map read (words line)
   in (x, y)
 
@@ -10,11 +10,10 @@ distance :: (Int, Int) -> Int
 distance (x, y) = abs (x - y)
 
 countOccurances :: [Int] -> Map.Map Int Int
-countOccurances input = 
-  foldl (\acc num -> Map.insertWith (+) num 1 acc) Map.empty input
+countOccurances = foldl (\acc num -> Map.insertWith (+) num 1 acc) Map.empty
 
 calculateSimilarity :: Int -> Map.Map Int Int -> Int
-calculateSimilarity value table = case Map.lookup value table of 
+calculateSimilarity value table = case Map.lookup value table of
   Just y -> value * y
   Nothing -> 0
 
@@ -31,5 +30,5 @@ partTwo inputFile = do
   content <- readFile inputFile
   let (x, y) = unzip (map parsePair (lines content))
   let occurances = countOccurances y
-  let result = sum (map (\value -> calculateSimilarity value occurances) x)
+  let result = sum (map (`calculateSimilarity` occurances) x)
   print result
