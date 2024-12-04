@@ -1,3 +1,5 @@
+module Main where
+
 import Data.List
 import qualified Data.Map.Strict as Map
 
@@ -32,3 +34,10 @@ partTwo inputFile = do
   let occurances = countOccurances y
   let result = sum (map (`calculateSimilarity` occurances) x)
   print result
+
+main :: IO ()
+main = do
+  putStrLn "Part One: "
+  partOne "input/day_1_input.txt"
+  putStrLn "Part Two: "
+  partTwo "input/day_1_input.txt"

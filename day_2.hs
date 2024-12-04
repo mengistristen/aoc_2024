@@ -1,3 +1,5 @@
+module Main where
+
 process :: [Int] -> Int -> Bool
 process (x : y : rest) tolerance
   | x == y = (tolerance > 0) && process (y : rest) (tolerance - 1)
@@ -32,3 +34,10 @@ partTwo input = do
   let reports :: [[Int]] = map (map read) text
   let result = map (`process` 1) reports
   print (length (filter id result))
+
+main :: IO ()
+main = do
+  putStrLn "Part One: "
+  partOne "input/day_2_input.txt"
+  putStrLn "Part Two: "
+  partTwo "input/day_2_input.txt"
