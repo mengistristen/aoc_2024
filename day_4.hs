@@ -1,7 +1,7 @@
 module Main where
 
-import Debug.Trace
 import Data.List
+import Debug.Trace
 
 directions = [(-1, -1), (0, -1), (1, -1), (-1, 0), (1, 0), (-1, 1), (0, 1), (1, 1)]
 
@@ -14,17 +14,22 @@ getElement input (x, y)
   | y < 0 || y >= length input = Nothing
   | otherwise = Just ((input !! y) !! x)
 
-process :: [[Char]] -> [Int]
-process input =
-  map (processCell input) (getIndices (length input) (length (head input)))
+process :: [[Char]] -> ([[Char]] -> (Int, Int) -> Int) -> [Int]
+process input f =
+  map (f input) (getIndices (length input) (length (head input)))
 
-processCell :: [[Char]] -> (Int, Int) -> Int
-processCell input (x, y)
-  | input !! y !! x == 'X' = sum $ map (processWord input (x, y) "") directions
+processXmas :: [[Char]] -> (Int, Int) -> Int
+processXmas input (x, y)
+  | input !! y !! x == 'X' = sum $ map (processXmasWord input (x, y) "") directions
   | otherwise = 0
 
-processWord :: [[Char]] -> (Int, Int) -> [Char] -> (Int, Int) -> Int
-processWord input (x, y) accum (dx, dy) =
+processXMas :: [[Char]] -> (Int, Int) -> Int
+processXMas input (x, y)
+  | input !! y !! x == 'A' = 1
+  | otherwise = 0
+
+processXmasWord :: [[Char]] -> (Int, Int) -> [Char] -> (Int, Int) -> Int
+processXmasWord input (x, y) accum (dx, dy) =
   case getElement input (x, y) of
     Nothing -> 0
     Just value ->
@@ -33,13 +38,13 @@ processWord input (x, y) accum (dx, dy) =
             then 1
             else
               if str `isPrefixOf` "XMAS"
-                then processWord input (x + dx, y + dy) str (dx, dy)
+                then processXmasWord input (x + dx, y + dy) str (dx, dy)
                 else 0
 
-partOne :: String -> IO()
+partOne :: String -> IO ()
 partOne inputFile = do
   content <- readFile inputFile
-  print $ sum $ process $ lines content
+  print $ sum $ process (lines content) processXmas
 
 main :: IO ()
 main = do
