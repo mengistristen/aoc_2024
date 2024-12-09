@@ -35,15 +35,6 @@ findVisited obstructions (x, y) dir width height visited
   where
     next = move (x, y) dir
 
-showVisited :: [(Int, Int)] -> (Int, Int) -> Int -> Int -> String -> String
-showVisited visited (x, y) width height accum
-  | y >= height = accum
-  | x >= width = showVisited visited (0, y + 1) width height (accum ++ ['\n'])
-  | otherwise =
-      if (x, y) `elem` visited
-        then showVisited visited (x + 1, y) width height (accum ++ ['X'])
-        else showVisited visited (x + 1, y) width height (accum ++ ['.'])
-
 partOne :: String -> IO ()
 partOne inputFile = do
   contents <- readFile inputFile
