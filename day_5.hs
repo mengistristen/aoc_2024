@@ -39,7 +39,8 @@ processPagesTwo pairs pages =
   if pages == sorted
     then 0
     else sorted !! div (length sorted) 2
-    where sorted = sortBy (sortPages pairs) pages
+  where
+    sorted = sortBy (sortPages pairs) pages
 
 partOne :: String -> IO ()
 partOne inputFile = do
@@ -56,4 +57,8 @@ partTwo inputFile = do
        in print a
 
 main :: IO ()
-main = undefined
+main = do
+  putStrLn "Part One: "
+  partOne "input/day_5_input.txt"
+  putStrLn "Part Two: "
+  partTwo "input/day_5_input.txt"
