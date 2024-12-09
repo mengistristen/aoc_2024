@@ -25,7 +25,9 @@ processXmas input (x, y)
 
 processXMas :: [[Char]] -> (Int, Int) -> Int
 processXMas input (x, y)
-  | input !! y !! x == 'A' = 1
+  | input !! y !! x == 'A' = case (getElement input (x - 1, y - 1), getElement input (x + 1, y + 1), getElement input (x - 1, y + 1), getElement input (x + 1, y - 1)) of
+      (Just a, Just b, Just c, Just d) -> if ((a == 'M' && b == 'S') || (a == 'S' && b == 'M')) && ((c == 'M' && d == 'S') || (c == 'S' && d == 'M')) then 1 else 0
+      _ -> 0
   | otherwise = 0
 
 processXmasWord :: [[Char]] -> (Int, Int) -> [Char] -> (Int, Int) -> Int
@@ -46,6 +48,14 @@ partOne inputFile = do
   content <- readFile inputFile
   print $ sum $ process (lines content) processXmas
 
+partTwo :: String -> IO()
+partTwo inputFile = do
+  content <- readFile inputFile
+  print $ sum $ process (lines content) processXMas
+
 main :: IO ()
 main = do
-  print "Hello"
+  putStrLn "Part One: "
+  partOne "input/day_4_input.txt"
+  putStrLn "Part Two: "
+  partTwo "input/day_4_input.txt"
