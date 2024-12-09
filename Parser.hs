@@ -48,3 +48,9 @@ notNull (Parser p) = Parser $ \input -> do
 
 numP :: Parser Int
 numP = read <$> notNull (spanP isDigit)
+
+ws :: Parser String
+ws = spanP isSpace
+
+sepBy :: Parser a -> Parser b -> Parser [b]
+sepBy sep element = (:) <$> element <*> many (sep *> element) <|> pure []
